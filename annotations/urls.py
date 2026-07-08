@@ -7,10 +7,15 @@ from .views import (
 )
 
 urlpatterns = [
-    path("upload/", ImageUploadView.as_view()),
-    path("polygon/", PolygonCreateView.as_view(), name="polygon-create",),
-    path("polygon/", PolygonListCreateView.as_view()),
+    # Upload image
+    path("upload/", ImageUploadView.as_view(), name="image-upload"),
 
-    # DELETE polygon
-    path("polygon/<int:pk>/", PolygonDeleteView.as_view()),
+    # Create polygon
+    path("polygon/", PolygonCreateView.as_view(), name="polygon-create"),
+
+    # List polygons
+    path("polygon/list/", PolygonListView.as_view(), name="polygon-list"),
+
+    # Delete polygon
+    path("polygon/<int:pk>/", PolygonDeleteView.as_view(), name="polygon-delete"),
 ]
