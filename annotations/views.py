@@ -4,8 +4,8 @@ from .serializers import ImageSerializer, PolygonSerializer
 
 
 # Upload Image API
-class ImageUploadView(generics.CreateAPIView):
-    queryset = Image.objects.all()
+class ImageUploadView(generics.ListCreateAPIView):
+    queryset = Image.objects.all().order_by("-id")
     serializer_class = ImageSerializer
 
 class PolygonCreateView(generics.CreateAPIView):
