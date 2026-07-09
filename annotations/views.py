@@ -12,9 +12,10 @@ class ImageUploadView(generics.ListCreateAPIView):
     def create(self, request, *args, **kwargs):
         try:
             serializer = self.get_serializer(data=request.data)
-            serializer.is_valid(raise_exception=True)
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            if not serializer.is_valid():
+                return Response(serializer.errors, status=400)
+            image = serializer.save()
+            return Response(ImageSerializer(image).data, status=201)
 
         except Exception as e:
             print(traceback.format_exc())
