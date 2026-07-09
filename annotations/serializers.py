@@ -3,9 +3,14 @@ from .models import Image, Polygon
 
 
 class ImageSerializer(serializers.ModelSerializer):
+    image = serializers.SerializerMethodField()
+
     class Meta:
         model = Image
-        fields = "__all__"
+        fields = ["id", "image", "filename", "uploaded_at"]
+
+    def get_image(self, obj):
+        return obj.image.url if obj.image else None
 
 
 class PolygonSerializer(serializers.ModelSerializer):
