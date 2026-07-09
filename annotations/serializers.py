@@ -7,10 +7,12 @@ class ImageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Image
-        fields = ["id", "image", "filename", "uploaded_at"]
+        fields = "__all__"
 
     def get_image(self, obj):
-        return obj.image.url if obj.image else None
+        if obj.image:
+            return obj.image.url
+        return None
 
 
 class PolygonSerializer(serializers.ModelSerializer):
