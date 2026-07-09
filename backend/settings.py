@@ -150,6 +150,10 @@ cloudinary.config(
     api_secret=os.environ.get("CLOUDINARY_API_SECRET"),
 )
 
+print("Cloud Name:", os.getenv("CLOUDINARY_CLOUD_NAME"))
+print("API Key:", os.getenv("CLOUDINARY_API_KEY"))
+print("API Secret Exists:", bool(os.getenv("CLOUDINARY_API_SECRET")))
+
 # -----------------------------------------------------------------------------
 # Django REST Framework
 # -----------------------------------------------------------------------------
