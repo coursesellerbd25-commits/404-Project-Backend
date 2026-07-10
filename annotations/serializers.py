@@ -3,16 +3,17 @@ from .models import Image, Polygon
 
 
 class ImageSerializer(serializers.ModelSerializer):
-    image = serializers.SerializerMethodField()
-
     class Meta:
         model = Image
         fields = "__all__"
 
-    def get_image(self, obj):
-        if obj.image:
-            return obj.image.url
-        return None
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+
+        if instance.image:
+            data["image"] = instance.image.url
+
+        return data
 
 
 class PolygonSerializer(serializers.ModelSerializer):
