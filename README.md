@@ -18,13 +18,13 @@ The backend provides APIs for:
 Backend API:
 
 ```
-(Add deployed backend URL here)
+https://four04-project-backend-1.onrender.com
 ```
 
 Frontend:
 
 ```
-(Add deployed frontend URL here)
+https://404-project-frontend.vercel.app/
 ```
 
 ---
