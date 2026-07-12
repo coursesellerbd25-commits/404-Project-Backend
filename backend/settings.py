@@ -2,6 +2,7 @@ from pathlib import Path
 import os
 import cloudinary
 from dotenv import load_dotenv
+from datetime import timedelta
 
 load_dotenv()
 
@@ -168,6 +169,11 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
     )
+}
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=7),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=30),
 }
 
 
