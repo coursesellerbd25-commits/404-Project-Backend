@@ -1,6 +1,6 @@
 # 404 Assessment Backend
 
-Backend API for the **404 Assessment Project**, built with **Django, Django REST Framework, JWT Authentication, and PostgreSQL/SQLite**.
+Backend API for the **404 Assessment Project**, built with **Django, Django REST Framework, JWT Authentication, SQLite, and Cloudinary**.
 
 The backend provides APIs for:
 
@@ -63,10 +63,35 @@ Users can:
 
 ## Authentication
 
-- JWT-based authentication
-- Login endpoint
-- Token refresh support
+Implemented using Django Simple JWT.
+
+Features:
+
+- Email and password authentication
+- JWT access token
+- JWT refresh token
 - Protected API routes
+- Custom JWT serializer for email login
+- Extended JWT lifetime for demo usage
+
+JWT Configuration:
+
+The default Django authentication system uses username-based login. 
+For this project, Simple JWT was customized to authenticate users using email and password.
+
+Configuration:
+
+- Access token lifetime: 7 days
+- Refresh token lifetime: 30 days
+
+Example:
+
+```python
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=7),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=30),
+}
+```
 
 ---
 
@@ -128,9 +153,11 @@ Example:
 - Django
 - Django REST Framework
 - Simple JWT
-- PostgreSQL / SQLite
+- SQLite Database
+- Cloudinary
 - Pillow
 - Django CORS Headers
+- python-dotenv
 
 ---
 
@@ -145,6 +172,13 @@ backend/
 │   ├── asgi.py
 │   └── wsgi.py
 │
+├── accounts/
+│   ├── admin.py
+│   ├── apps.py
+│   ├── models.py
+│   ├── serializers.py
+│   ├── views.py
+│
 ├── tasks/
 │   ├── models.py
 │   ├── serializers.py
@@ -158,9 +192,6 @@ backend/
 │   ├── views.py
 │   ├── urls.py
 │   └── migrations/
-│
-├── media/
-│   └── images/
 │
 ├── requirements.txt
 ├── manage.py
@@ -178,13 +209,17 @@ Stores task information.
 Example fields:
 
 ```
+Example fields:
+
 title
-description
 status
 priority
-tags
+selected_date
 due_date
+tags
 created_at
+updated_at
+
 ```
 
 ---
@@ -229,11 +264,23 @@ Image
 
 ## Authentication
 
-### Login
+## Account API
 
 ```
 POST /api/login/
 ```
+
+Login using email and password:
+
+The backend accepts email instead of Django's default username authentication.
+
+### Login
+
+```json
+{
+    "email": "admin@gmail.com",
+    "password": "MyAdmin123!"
+}
 
 Response:
 
@@ -359,6 +406,17 @@ cd backend
 
 ---
 
+# Development Environment
+
+Example environment:
+
+Python: 3.13
+Node: 20+
+Frontend: React + Vite
+Backend: Django + Django REST Framework
+
+---
+
 # Create Virtual Environment
 
 Windows:
@@ -404,9 +462,11 @@ SECRET_KEY=your_secret_key
 
 DEBUG=True
 
-DATABASE_URL=your_database_url
+CLOUDINARY_CLOUD_NAME=your_cloud_name
 
-ALLOWED_HOSTS=localhost,127.0.0.1
+CLOUDINARY_API_KEY=your_api_key
+
+CLOUDINARY_API_SECRET=your_api_secret
 ```
 
 ---
@@ -447,20 +507,17 @@ http://127.0.0.1:8000
 
 ---
 
-# Media Configuration
+# Media Storage
 
-Uploaded images are stored inside:
+Uploaded images are stored using Cloudinary.
 
-```
-media/images/
-```
+The backend uses:
 
-During development:
+- django-cloudinary-storage
+- Cloudinary API
+- Environment variables for credentials
 
-```python
-MEDIA_URL = "/media/"
-MEDIA_ROOT = BASE_DIR / "media"
-```
+Uploaded images are automatically hosted through Cloudinary URLs instead of local media storage.
 
 ---
 
@@ -478,7 +535,7 @@ Production checklist:
 - Set DEBUG=False
 - Configure allowed hosts
 - Configure database
-- Configure media storage
+- Configure Cloudinary storage
 - Add CORS allowed frontend domain
 - Set environment variables
 
@@ -508,6 +565,15 @@ Saving coordinate arrays efficiently.
 
 Managing image upload and serving uploaded files.
 
+## Cloudinary Migration
+
+Initially images were stored locally. 
+The storage system was migrated to Cloudinary to support production deployment and persistent image URLs.
+
+## Email Based JWT Authentication
+
+Customizing Simple JWT because Django default authentication uses username.
+
 ---
 
 # Solutions
@@ -520,6 +586,9 @@ Solutions implemented:
 - JSONField for polygon coordinate storage
 - Separate applications for tasks and annotations
 - Modular serializers and API services
+- Integrated Cloudinary storage for uploaded images
+- Customized Simple JWT authentication to support email login
+- Configured extended JWT expiration for demo usability
 
 ---
 
@@ -565,8 +634,6 @@ Possible enhancements:
 - Multiple annotation labels
 - Polygon editing
 - Annotation history
-- Cloud image storage
-- Automated tests
 - API documentation with Swagger
 
 ---
