@@ -281,6 +281,7 @@ The backend accepts email instead of Django's default username authentication.
     "email": "admin@gmail.com",
     "password": "MyAdmin123!"
 }
+```
 
 Response:
 
@@ -603,7 +604,7 @@ Django REST Framework
 djangorestframework-simplejwt
 django-cors-headers
 Pillow
-PostgreSQL
+SQLite
 ```
 
 Exact versions are available in:
